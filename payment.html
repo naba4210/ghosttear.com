@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE PAYMENT GATEWAY</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            // Initialize EmailJS with User's Public Key
+            emailjs.init({
+                publicKey: "voz-6WNAeuWD_IZQm",
+            });
+        })();
+    </script>
+</head>
+
+<body class="cyber-bg">
+    <nav class="top-nav">
+        <span id="userDisplay">ENCRYPTED CONNECTION...</span>
+        <div>
+            <button onclick="delayedNavigate('index.html')" class="admin-btn">RETURN HOME</button>
+        </div>
+    </nav>
+
+    <div class="glass-panel app-form">
+        <h2 style="text-align:center; margin-top:0; margin-bottom:0.5rem; color: var(--accent-primary);">PAYMENT GATEWAY
+        </h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            BKASH MANUAL TRANSFER PROTOCOL
+        </p>
+
+        <div
+            style="background: rgba(0, 0, 0, 0.4); padding: 1rem; border: 1px solid var(--accent-secondary); margin-bottom: 2rem; border-radius: 4px;">
+            <p style="margin: 0; color: var(--text-primary); text-align: center;">
+                SEND PAYMENT TO: <span
+                    style="font-size: 1.2rem; font-weight: bold; color: var(--success);">01710231947</span> (PERSONAL)
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; text-align: center; color: var(--text-muted);">
+                USE REFERENCE: <span style="color: var(--highlight);">YOUR DISCORD NAME</span>
+            </p>
+        </div>
+
+        <form id="paymentForm">
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>LEGAL NAME</label>
+                    <input type="text" id="payName" required placeholder="Sakamoto Days">
+                </div>
+                <div class="input-group">
+                    <label>YOUR DISCORD TAG</label>
+                    <input type="text" id="payDiscord" required placeholder="User#0000">
+                </div>
+                <div class="input-group full-width">
+                    <label>CONTACT EMAIL</label>
+                    <input type="email" id="payEmail" required placeholder="For reception">
+                </div>
+                <div class="input-group">
+                    <label>BKASH SENDER NUMBER</label>
+                    <input type="text" id="senderNumber" required placeholder="017..." maxlength="11">
+                </div>
+                <div class="input-group">
+                    <label>TRANSACTION ID (TrxID)</label>
+                    <input type="text" id="trxId" required placeholder="9G7..." style="text-transform: uppercase;">
+                </div>
+                <div class="input-group full-width">
+                    <label>AMOUNT SENT (BDT)</label>
+                    <input type="number" id="amount" required placeholder="500">
+                </div>
+            </div>
+            <button type="submit" class="cyber-button submit-btn" style="margin-top: 2rem;">CONFIRM TRANSFER</button>
+        </form>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

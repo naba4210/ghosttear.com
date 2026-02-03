@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN OVERRIDE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="cyber-bg admin-mode">
+    <nav class="top-nav">
+        <span id="userDisplay">ADMIN CONTROL</span>
+        <div>
+            <button onclick="delayedNavigate('download.html')" class="admin-btn">DOWNLOADS</button>
+            <button onclick="logout()" class="logout-btn">DISCONNECT</button>
+        </div>
+    </nav>
+    <div class="glass-panel wide-panel">
+        <h1 style="text-align: center; margin-bottom: 0.5rem;">USER MANAGEMENT</h1>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Create new credentials for
+            authorized personnel.</p>
+
+        <form id="createUserForm">
+            <div class="input-group">
+                <label>NEW EMAIL</label>
+                <input type="email" id="newEmail" required>
+            </div>
+            <div class="input-group">
+                <label>TEMPORARY PASSWORD</label>
+                <input type="password" id="newPassword" required>
+            </div>
+            <div class="input-group">
+                <label>ACCESS LEVEL</label>
+                <select id="newRole">
+                    <option value="User">USER</option>
+                    <option value="Admin">ADMIN</option>
+                </select>
+            </div>
+            <button type="submit" class="cyber-button">PROVISION USER</button>
+        </form>
+        <div id="adminStatus"></div>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
+            <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">AUTHORIZED CITIZENS</h2>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; color: var(--text-secondary);">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid var(--border);">
+                            <th style="padding: 0.5rem;">EMAIL</th>
+                            <th style="padding: 0.5rem;">ROLE</th>
+                            <th style="padding: 0.5rem; text-align: right;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userListBody">
+                        <!-- User rows will go here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
+            <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">SYSTEM LOGS</h2>
+            <ul id="historyList"
+                style="list-style: none; padding: 0; max-height: 200px; overflow-y: auto; text-align: left; font-size: 0.9rem; color: var(--text-secondary);">
+                <!-- Logs will appear here -->
+            </ul>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="delayedNavigate('download.html')" class="secondary-btn" style="padding: 10px 20px;">Back
+                to Dashboard</button>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOS SANTOS JOBS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="cyber-bg">
+    <nav class="top-nav">
+        <span id="userDisplay">SCANNING...</span>
+        <div>
+            <button onclick="delayedNavigate('download.html')" class="admin-btn">DOWNLOADS</button>
+            <button onclick="delayedNavigate('payment.html')" class="admin-btn">PAYMENT</button>
+            <button onclick="delayedNavigate('admin.html')" class="admin-btn">ADMIN PANEL</button>
+            <button onclick="logout()" class="logout-btn">DISCONNECT</button>
+        </div>
+    </nav>
+
+    <div class="glass-panel app-form">
+        <h2 style="text-align:center; margin-top:0; margin-bottom:1.5rem;">JOB APPLICATION</h2>
+        <form id="appForm">
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>LEGAL NAME</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="input-group">
+                    <label>CONTACT EMAIL</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="input-group">
+                    <label>DISCORD TAG</label>
+                    <input type="text" id="discord" placeholder="user#0000" required>
+                </div>
+                <div class="input-group">
+                    <label>PHONE NUMBER</label>
+                    <input type="text" id="phone" required>
+                </div>
+                <div class="input-group full-width">
+                    <label>CITIZEN ID (CID)</label>
+                    <input type="text" id="cid" required>
+                </div>
+                <div class="input-group full-width">
+                    <label>DESIGNATED RANK</label>
+                    <select id="rank" required>
+                        <option value="Supporting Team">Supporting Team</option>
+                        <option value="Moderator">Moderator</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Senior Admin">Senior Admin</option>
+                        <option value="Co Admin">Co Admin</option>
+                        <option value="Higher Admin">Higher Admin</option>
+                        <option value="Convoy Controller">Convoy Controller</option>
+                        <option value="Senior Convoy Controller">Senior Convoy Controller</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="cyber-button submit-btn">SUBMIT APPLICATION</button>
+        </form>
+    </div>
+
+
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
