@@ -46,6 +46,11 @@ html {
     padding: 2rem 1rem;
 }
 
+.content-mode {
+    justify-content: flex-start;
+    padding-top: 120px;
+}
+
 /* Typography - Strong and Bold */
 h1,
 h2,
@@ -329,13 +334,79 @@ select:hover {
     grid-column: span 2;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .grid-form {
         grid-template-columns: 1fr;
     }
 
     .grid-form .full-width {
         grid-column: span 1;
+    }
+
+    /* Mobile Navigation */
+    .top-nav {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        background: rgba(10, 10, 10, 0.98);
+        /* Less transparent on mobile for legibility */
+    }
+
+    .top-nav div {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .top-nav #userDisplay {
+        font-size: 1rem;
+    }
+
+    .admin-btn,
+    .logout-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        flex: 1 1 auto;
+        min-width: 80px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Layout Adjustments */
+    .cyber-bg {
+        padding-top: 240px;
+        /* Account for stacked nav */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        justify-content: flex-start;
+    }
+
+    .admin-mode {
+        padding-top: 240px;
+    }
+
+    .glass-panel {
+        padding: 2rem 1.25rem;
+        width: 95%;
+        margin-bottom: 2rem;
+    }
+
+    /* Type Adjustments */
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+        /* Force override inline styles if any */
+    }
+
+    .postcard {
+        width: 100%;
+        max-width: 300px;
     }
 }
 
@@ -355,8 +426,8 @@ select:hover {
 /* Postcard Grid Layout */
 .postcard-grid {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 2rem;
     width: 100%;
     margin-top: 2rem;
@@ -373,7 +444,8 @@ select:hover {
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     backdrop-filter: blur(5px);
-    width: 250px;
+    width: 100%;
+    max-width: 1000px;
 }
 
 .postcard:hover {
@@ -479,5 +551,26 @@ select:hover {
 
     50% {
         opacity: 1;
+    }
+}
+
+/* Page Specific Overrides */
+.download-wrapper {
+    width: 100%;
+    padding: 0 4rem;
+}
+
+.mission-passed-title {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .download-wrapper {
+        padding: 0 1rem;
+    }
+
+    .mission-passed-title {
+        font-size: 2.5rem;
     }
 }

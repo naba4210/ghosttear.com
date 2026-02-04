@@ -23,14 +23,44 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
 
+// --- LOGGING UTILITY ---
+async function logAction(type, message, details = "") {
+    try {
+        await addDoc(collection(db, "action_logs"), {
+            type: type, // 'INFO', 'ERROR', 'WARN', 'CLICK', 'AUTH'
+            message: message,
+            details: details,
+            timestamp: new Date().toISOString(),
+            page: window.location.pathname.split("/").pop() || "index.html"
+        });
+        // Console log for local debugging
+        console.log(`[LOG:${type}] ${message}`, details);
+    } catch (e) {
+        console.warn("Failed to write log:", e);
+    }
+}
+
+// Global Click Listener
+document.addEventListener('click', (e) => {
+    // We only log clicks on interactive elements to avoid noise
+    const target = e.target.closest('button, a, input, select');
+    if (target) {
+        let label = target.innerText || target.id || target.name || target.getAttribute('placeholder') || target.tagName;
+        // Truncate if too long
+        if (label.length > 30) label = label.substring(0, 30) + "...";
+        logAction("CLICK", `User clicked [${label}]`, `Tag: ${target.tagName}, ID: ${target.id}`);
+    }
+});
+
 const DISCORD_WEBHOOK_URL = 'YOUR_WEBHOOK_HERE'; // Replace with your actual Discord Webhook URL
 
 // --- AUTHENTICATION & REDIRECTION LOGIC ---
 onAuthStateChanged(auth, async (user) => {
     const currentPage = window.location.pathname.split("/").pop();
-    console.log('Auth state changed. User:', user ? user.email : 'None', 'Current page:', currentPage);
 
     if (user) {
+        logAction("AUTH", "User Authenticated", user.email);
+        console.log('Auth state changed. User:', user ? user.email : 'None', 'Current page:', currentPage);
         console.log('User authenticated, fetching role from Firestore...');
         // Fetch user role from Firestore
         const userRef = doc(db, "users", user.uid);
@@ -108,11 +138,37 @@ if (loginForm) {
                 errorDiv.style.display = 'block';
                 errorDiv.className = 'error-msg success-msg';
                 errorDiv.innerText = 'ACCESS GRANTED';
+                logAction("AUTH", "Login Success", email);
                 console.log('Login successful');
                 // Redirect handled by onAuthStateChanged
                 // Loader remains shown until redirect happens or we manually hide implementation
                 // onAuthStateChanged will trigger redirect which loads new page (and hides loader automatically via page refresh)
             } catch (error) {
+                logAction("ERROR", "Login Failed", `${email} - ${error.code}`);
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-login-credentials' || error.code === 'auth/invalid-credential') {
+                    // Check if it's potentially a new user request
+                    // We use a generic Confirm for "Email/Pass not found" to mimic "Ask if want to send request"
+                    if (confirm("ACCESS DENIED: ACCOUNT NOT FOUND.\n\nDo you want to transmit a REQUEST for access with these credentials?")) {
+                        try {
+                            logAction("AUTH", "Requesting Access", email);
+                            await addDoc(collection(db, "login_requests"), {
+                                email: email,
+                                // WARNING: Storing password as requested. In production, this is unsafe. 
+                                // Ideally, we'd just request access and email a link, but we are following specific instructions.
+                                password: pass,
+                                timestamp: new Date().toISOString(),
+                                status: "pending"
+                            });
+                            alert("REQUEST TRANSMITTED. PENDING ADMIN APPROVAL.");
+                            logAction("AUTH", "Request Sent", email);
+                        } catch (reqErr) {
+                            console.error("Request failed:", reqErr);
+                            alert("TRANSMISSION FAILED: " + reqErr.message + "\n\nPlease check console (F12) and Firestore Security Rules.");
+                            logAction("ERROR", "Request Transmit Failed", reqErr.message);
+                        }
+                    }
+                }
+
                 // Hide loader on error so user can retry
                 window.hideLoader();
 
@@ -396,9 +452,146 @@ if (createUserForm) {
         }
     }
 
-    // Call fetchUsers explicitly or set up a real-time listener if preferred.
-    // For now, let's call it once on load.
+    // --- FETCH & DISPLAY CALLS ---
     if (userListBody) fetchUsers();
+
+    // --- FETCH & DISPLAY ACCESS REQUESTS ---
+    const requestListBody = document.getElementById('requestListBody');
+    if (requestListBody) {
+        const qReq = query(collection(db, "login_requests"), orderBy("timestamp", "desc"));
+        onSnapshot(qReq, (snapshot) => {
+            requestListBody.innerHTML = "";
+            if (snapshot.empty) {
+                requestListBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">NO PENDING REQUESTS</td></tr>';
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const req = docSnap.data();
+                const reqId = docSnap.id;
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = "1px solid #222";
+
+                // Format Date
+                const date = new Date(req.timestamp).toLocaleDateString() + " " + new Date(req.timestamp).toLocaleTimeString();
+
+                tr.innerHTML = `
+                    <td style="padding: 0.5rem;">${req.email}</td>
+                    <td style="padding: 0.5rem; color: var(--text-muted); font-size: 0.8rem;">${date}</td>
+                    <td style="padding: 0.5rem; text-align: right;">
+                        <button onclick="window.handleRequest('${reqId}', '${req.email}', '${req.password}', 'approve')" 
+                            style="background: var(--success); border: none; color: black; padding: 4px 8px; margin-right: 5px; cursor: pointer; border-radius: 4px; font-weight:bold;">
+                            ✓
+                        </button>
+                        <button onclick="window.handleRequest('${reqId}', '${req.email}', '${req.password}', 'deny')"
+                            style="background: var(--error); border: none; color: white; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-weight:bold;">
+                            X
+                        </button>
+                    </td>
+                `;
+                requestListBody.appendChild(tr);
+            });
+        });
+
+        // Global Handler for Requests
+        window.handleRequest = async (docId, email, password, action) => {
+            const statusDiv = document.getElementById('adminStatus');
+
+            if (action === 'deny') {
+                if (confirm(`Reject request from ${email}?`)) {
+                    logAction("ADMIN_ACTION", "Rejected Access Request", `Target: ${email}`);
+                    await deleteDoc(doc(db, "login_requests", docId));
+                    // No need to refresh, listener handles it
+                }
+                return;
+            }
+
+            if (action === 'approve') {
+                if (!confirm(`APPROVE ACCESS for ${email}?\nThis will create a USER account automatically.`)) return;
+
+                statusDiv.innerText = "PROCESSING APPROVAL...";
+                statusDiv.style.color = "var(--text-secondary)";
+
+                let secondaryApp = null;
+                try {
+                    // 1. Initialize secondary app
+                    secondaryApp = initializeApp(firebaseConfig, "SecondaryReq");
+                    const secondaryAuth = getAuth(secondaryApp);
+
+                    // 2. Create Auth User
+                    const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+                    const newUser = userCredential.user;
+
+                    // 3. Create User Doc in Firestore
+                    await setDoc(doc(db, "users", newUser.uid), {
+                        email: email,
+                        role: "User",
+                        authorizedBy: auth.currentUser.email,
+                        joinedAt: new Date().toISOString()
+                    });
+
+                    // 4. Log it
+                    logAction("ADMIN_ACTION", "Approved Access Request", `Created user: ${email}`);
+                    await addDoc(collection(db, "history"), {
+                        action: "REQUEST_APPROVED",
+                        target_email: email,
+                        role: "User",
+                        admin_email: auth.currentUser.email,
+                        timestamp: new Date().toISOString()
+                    });
+
+                    // 5. Delete Request
+                    await deleteDoc(doc(db, "login_requests", docId));
+
+                    statusDiv.innerText = `APPROVED: ${email}`;
+                    statusDiv.style.color = "var(--success)";
+                } catch (err) {
+                    console.error("Approval Error:", err);
+                    logAction("ERROR", "Approval Failed", err.message);
+                    statusDiv.innerText = `ERROR: ${err.message}`;
+                    statusDiv.style.color = "var(--error)";
+                } finally {
+                    if (secondaryApp) await deleteApp(secondaryApp);
+                }
+            }
+        };
+    }
+
+    // --- FETCH & DISPLAY ACTION LOGS (Admin Only) ---
+    const actionLogBody = document.getElementById('actionLogBody');
+    if (actionLogBody) {
+        // Query last 50 logs
+        const qLogs = query(collection(db, "action_logs"), orderBy("timestamp", "desc"), limit(50));
+        onSnapshot(qLogs, (snapshot) => {
+            actionLogBody.innerHTML = "";
+            if (snapshot.empty) {
+                actionLogBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">NO LOGS YET</td></tr>';
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const log = docSnap.data();
+                const tr = document.createElement('tr');
+
+                // Color code types
+                let color = "var(--text-secondary)";
+                if (log.type === 'ERROR') color = "var(--error)";
+                if (log.type === 'WARN') color = "orange";
+                if (log.type === 'AUTH') color = "var(--success)";
+                if (log.type === 'CLICK') color = "#aaa";
+
+                const time = new Date(log.timestamp).toLocaleTimeString();
+
+                tr.innerHTML = `
+                    <td style="padding: 0.25rem;">${time}</td>
+                    <td style="padding: 0.25rem; color: ${color}; font-weight:bold; font-size: 0.7rem;">${log.type}</td>
+                    <td style="padding: 0.25rem;">${log.message} <span style="opacity:0.5; font-size:0.7em;">${log.details || ''}</span></td>
+                `;
+                actionLogBody.appendChild(tr);
+            });
+        });
+    }
 
     // Expose delete function to window
     window.confirmDelete = async (uid, email, role) => {
@@ -406,6 +599,7 @@ if (createUserForm) {
             try {
                 // 1. Delete from Firestore
                 await deleteDoc(doc(db, "users", uid));
+                logAction("ADMIN_ACTION", "User Terminated", `Target: ${email}`);
 
                 // 2. Log to History
                 await addDoc(collection(db, "history"), {
@@ -421,6 +615,7 @@ if (createUserForm) {
                 alert("TERMINATION SUCCESSFUL.");
             } catch (err) {
                 console.error("Error deleting user:", err);
+                logAction("ERROR", "Termination Failed", err.message);
                 alert("TERMINATION FAILED: " + err.message);
             }
         }
@@ -441,6 +636,8 @@ const pageLoader = document.getElementById('pageLoader');
 
 window.showLoader = () => {
     if (pageLoader) {
+        // Optional: log loader if needed, but might spam
+        // logAction("SYSTEM", "Loader Shown");
         pageLoader.style.display = 'flex';
     }
 };
@@ -452,6 +649,7 @@ window.hideLoader = () => {
 };
 
 window.delayedNavigate = (url) => {
+    logAction("NAV", "Delayed Navigation Initiated", `Target: ${url}`);
     console.log('Initiating delayed navigation to:', url);
     window.showLoader();
     setTimeout(() => {

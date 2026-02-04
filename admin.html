@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN OVERRIDE</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/TP4Q31D2/20260204-142818.png">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -59,17 +60,63 @@
             </div>
         </div>
 
-        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
-            <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">SYSTEM LOGS</h2>
-            <ul id="historyList"
-                style="list-style: none; padding: 0; max-height: 200px; overflow-y: auto; text-align: left; font-size: 0.9rem; color: var(--text-secondary);">
-                <!-- Logs will appear here -->
-            </ul>
+    </div>
+
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
+        <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">ACTION LOG (LIVE)</h2>
+        <div
+            style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px;">
+            <table
+                style="width: 100%; border-collapse: collapse; font-size: 0.85rem; color: var(--text-secondary); font-family: 'Consolas', monospace;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 1px solid var(--border);">
+                        <th style="padding: 0.25rem;">TIME</th>
+                        <th style="padding: 0.25rem;">TYPE</th>
+                        <th style="padding: 0.25rem;">DETAILS</th>
+                    </tr>
+                </thead>
+                <tbody id="actionLogBody">
+                    <!-- Action rows will go here -->
+                    <tr>
+                        <td colspan="3" style="text-align:center;">INITIALIZING FEED...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="delayedNavigate('download.html')" class="secondary-btn" style="padding: 10px 20px;">Back
-                to Dashboard</button>
+    </div>
+
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
+        <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">PENDING ACCESS REQUESTS</h2>
+        <div style="max-height: 250px; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; color: var(--text-secondary);">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 1px solid var(--border);">
+                        <th style="padding: 0.5rem;">EMAIL</th>
+                        <th style="padding: 0.5rem;">REQ. TIME</th>
+                        <th style="padding: 0.5rem; text-align: right;">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="requestListBody">
+                    <!-- Request rows will go here -->
+                    <tr>
+                        <td colspan="3" style="text-align:center;">LOADING REQUESTS...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
+
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neon-cyan);">
+        <h2 style="text-align: center; font-size: 1.2rem; margin-bottom: 1rem;">SYSTEM LOGS</h2>
+        <ul id="historyList"
+            style="list-style: none; padding: 0; max-height: 200px; overflow-y: auto; text-align: left; font-size: 0.9rem; color: var(--text-secondary);">
+            <!-- Logs will appear here -->
+        </ul>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="delayedNavigate('download.html')" class="secondary-btn" style="padding: 10px 20px;">Back
+            to Dashboard</button>
+    </div>
     </div>
     <script type="module" src="script.js"></script>
 </body>
