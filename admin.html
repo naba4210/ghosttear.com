@@ -13,8 +13,16 @@
     <nav class="top-nav">
         <span id="userDisplay">ADMIN CONTROL</span>
         <div>
-            <button onclick="delayedNavigate('download.html')" class="admin-btn">DOWNLOADS</button>
-            <button onclick="logout()" class="logout-btn">DISCONNECT</button>
+            <button onclick="delayedNavigate('index.html')" class="nav-icon-link" title="Return Home"
+                style="margin-right: auto;">
+                <img src="https://i.postimg.cc/WbSq3Pc8/icons8-back-50.png" alt="Return Home">
+            </button>
+            <button onclick="delayedNavigate('download.html')" class="nav-icon-link" title="Downloads">
+                <img src="https://i.postimg.cc/vmTZNRpK/icons8-download-66.png" alt="Downloads">
+            </button>
+            <button onclick="logout()" class="nav-icon-link" title="Disconnect">
+                <img src="https://i.postimg.cc/HLXhHjDY/icons8-logout-64.png" alt="Disconnect">
+            </button>
         </div>
     </nav>
     <div class="glass-panel wide-panel">
@@ -118,6 +126,12 @@
             to Dashboard</button>
     </div>
     </div>
+    <div class="fab-container">
+        <button onclick="delayedNavigate('payment.html')" class="fab-button" title="Payment">
+            <img src="https://i.postimg.cc/zDbRfh2k/icons8-dollar-64.png" alt="Payment">
+        </button>
+    </div>
+
     <script type="module" src="script.js"></script>
 </body>
 

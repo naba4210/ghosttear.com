@@ -13,10 +13,15 @@
     <nav class="top-nav">
         <span id="userDisplay">SCANNING...</span>
         <div>
-            <button onclick="delayedNavigate('download.html')" class="admin-btn">DOWNLOADS</button>
-            <button onclick="delayedNavigate('payment.html')" class="admin-btn">PAYMENT</button>
-            <button onclick="delayedNavigate('admin.html')" class="admin-btn">ADMIN PANEL</button>
-            <button onclick="logout()" class="logout-btn">DISCONNECT</button>
+            <button onclick="delayedNavigate('download.html')" class="nav-icon-link" title="Downloads">
+                <img src="https://i.postimg.cc/vmTZNRpK/icons8-download-66.png" alt="Downloads">
+            </button>
+            <button onclick="delayedNavigate('admin.html')" class="nav-icon-link" title="Admin Panel">
+                <img src="https://i.postimg.cc/N0njhJtG/icons8-admin-settings-male-64.png" alt="Admin Panel">
+            </button>
+            <button onclick="logout()" class="nav-icon-link" title="Disconnect">
+                <img src="https://i.postimg.cc/HLXhHjDY/icons8-logout-64.png" alt="Disconnect">
+            </button>
         </div>
     </nav>
 
@@ -63,6 +68,12 @@
     </div>
 
 
+
+    <div class="fab-container">
+        <button onclick="delayedNavigate('payment.html')" class="fab-button" title="Payment">
+            <img src="https://i.postimg.cc/zDbRfh2k/icons8-dollar-64.png" alt="Payment">
+        </button>
+    </div>
 
     <script type="module" src="script.js"></script>
 </body>

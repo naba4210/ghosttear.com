@@ -108,8 +108,15 @@ h2 {
     width: 90%;
     max-width: 500px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    position: relative;
+    margin-bottom: 2rem;
 }
+
+/* Ensure form wrapper does not go under nav on mobile/small screens */
+.app-form {
+    margin-top: 60px;
+    /* Added margin to push it down from fixed nav */
+}
+
 
 .glass-panel::before {
     content: '';
@@ -236,41 +243,33 @@ select:hover {
 
 .top-nav div {
     display: flex;
-    gap: 0.75rem;
+    gap: 1.5rem;
+    align-items: center;
 }
 
-.admin-btn,
-.logout-btn {
-    padding: 0.625rem 1.25rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-primary);
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: none;
-    transition: all 0.2s ease;
-}
-
-.admin-btn:hover {
-    background: var(--accent-primary);
-    border-color: var(--accent-primary);
-    color: white;
-}
-
-.logout-btn {
+/* Nav Link Icons */
+.nav-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
-    border-color: var(--error);
-    color: var(--error);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    padding: 5px;
 }
 
-.logout-btn:hover {
-    background: var(--error);
-    color: white;
-    border-color: var(--error);
+.nav-icon-link img {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
 }
+
+.nav-icon-link:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
 
 /* Adjust body padding for fixed nav */
 .cyber-bg {
@@ -334,6 +333,41 @@ select:hover {
     grid-column: span 2;
 }
 
+/* Floating Action Button */
+.fab-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 2000;
+}
+
+.fab-button {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border: none;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fab-button:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.7);
+}
+
+.fab-button img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+    pointer-events: none;
+}
+
+
 @media (max-width: 768px) {
     .grid-form {
         grid-template-columns: 1fr;
@@ -356,36 +390,29 @@ select:hover {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 1.5rem;
     }
 
     .top-nav #userDisplay {
         font-size: 1rem;
     }
 
-    .admin-btn,
-    .logout-btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.75rem;
-        flex: 1 1 auto;
-        min-width: 80px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     /* Layout Adjustments */
     .cyber-bg {
-        padding-top: 240px;
-        /* Account for stacked nav */
+        padding-top: 180px;
+        /* Reduced since nav items are icons now */
         padding-left: 1rem;
         padding-right: 1rem;
         justify-content: flex-start;
     }
 
     .admin-mode {
-        padding-top: 240px;
+        padding-top: 180px;
+    }
+
+    .app-form {
+        margin-top: 120px;
+        /* More margin on mobile */
     }
 
     .glass-panel {
@@ -404,9 +431,14 @@ select:hover {
         /* Force override inline styles if any */
     }
 
-    .postcard {
-        width: 100%;
-        max-width: 300px;
+    .fab-container {
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+
+    .fab-button {
+        width: 56px;
+        height: 56px;
     }
 }
 
@@ -423,60 +455,117 @@ select:hover {
     width: 95%;
 }
 
+/* Featured Section */
+.featured-section {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.featured-card {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(21, 21, 21, 0.9), rgba(30, 30, 40, 0.95));
+    border: 1px solid var(--accent-primary);
+    border-radius: 16px;
+    padding: 3rem;
+    /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
+    min-height: 400px;
+    /* Increased height */
+    justify-content: center;
+}
+
+.featured-card h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.featured-card p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.featured-card img {
+    width: 8rem;
+    height: 8rem;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
+}
+
+
 /* Postcard Grid Layout */
 .postcard-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
     width: 100%;
-    margin-top: 2rem;
+    max-width: 1000px;
 }
 
+/* List Style Postcard */
 .postcard {
     background: rgba(21, 21, 21, 0.7);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    /* Changed to row for list style */
     align-items: center;
-    text-align: center;
+    text-align: left;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     backdrop-filter: blur(5px);
     width: 100%;
-    max-width: 1000px;
+    gap: 1.5rem;
 }
 
 .postcard:hover {
-    transform: translateY(-5px);
+    transform: translateX(5px);
+    /* Slide right instead of up */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border-color: var(--accent-primary);
+    border-color: var(--accent-secondary);
 }
 
 .postcard img {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1rem;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0;
+    /* Remove bottom margin */
     filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+    flex-shrink: 0;
+}
+
+.postcard-content {
+    flex-grow: 1;
 }
 
 .postcard h3 {
     font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--text-primary);
 }
 
 .postcard p {
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
+    margin-bottom: 0;
 }
 
 .download-btn {
-    width: 100%;
-    padding: 0.75rem;
+    width: auto;
+    /* Auto width */
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
     background: rgba(99, 102, 241, 0.1);
     border: 1px solid var(--accent-primary);
     color: var(--accent-primary);
@@ -489,12 +578,44 @@ select:hover {
     justify-content: center;
     gap: 0.5rem;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .download-btn:hover {
     background: var(--accent-primary);
     color: white;
     box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+}
+
+@media (max-width: 768px) {
+    .postcard {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .postcard img {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 0.5rem;
+    }
+
+    .postcard-content {
+        width: 100%;
+    }
+
+    .download-btn {
+        width: 100%;
+    }
+
+    .featured-card {
+        padding: 2rem 1rem;
+        min-height: auto;
+    }
+
+    .featured-card h3 {
+        font-size: 1.5rem;
+    }
 }
 
 /* Loading Overlay */
@@ -555,9 +676,93 @@ select:hover {
 }
 
 /* Page Specific Overrides */
-.download-wrapper {
+/* Full Width Postcard */
+.full-width-postcard {
     width: 100%;
-    padding: 0 4rem;
+    max-width: 100%;
+    /* Ensure it takes full available width */
+    background: rgba(21, 21, 21, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    /* Space out content and button */
+    gap: 2rem;
+    backdrop-filter: blur(5px);
+    margin-bottom: 1rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.full-width-postcard:hover {
+    transform: translateX(5px);
+    border-color: var(--accent-secondary);
+}
+
+.full-width-postcard img.icon-display {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+}
+
+.full-width-postcard .content {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.full-width-postcard h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.full-width-postcard p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.download-icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-icon-btn img {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5));
+}
+
+.download-icon-btn:hover {
+    transform: scale(1.1);
+}
+
+.download-icon-btn:hover img {
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.8));
+}
+
+@media (max-width: 768px) {
+    .full-width-postcard {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .full-width-postcard .content {
+        text-align: center;
+    }
+
+    .full-width-postcard img.icon-display {
+        margin-bottom: 0.5rem;
+    }
 }
 
 .mission-passed-title {

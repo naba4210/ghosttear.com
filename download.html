@@ -13,8 +13,16 @@
     <nav class="top-nav">
         <span id="userDisplay">SCANNING...</span>
         <div>
-            <button onclick="delayedNavigate('admin.html')" class="admin-btn">ADMIN PANEL</button>
-            <button onclick="logout()" class="logout-btn">DISCONNECT</button>
+            <button onclick="delayedNavigate('index.html')" class="nav-icon-link" title="Return Home"
+                style="margin-right: auto;">
+                <img src="https://i.postimg.cc/WbSq3Pc8/icons8-back-50.png" alt="Return Home">
+            </button>
+            <button onclick="delayedNavigate('admin.html')" class="nav-icon-link" title="Admin Panel">
+                <img src="https://i.postimg.cc/N0njhJtG/icons8-admin-settings-male-64.png" alt="Admin Panel">
+            </button>
+            <button onclick="logout()" class="nav-icon-link" title="Disconnect">
+                <img src="https://i.postimg.cc/HLXhHjDY/icons8-logout-64.png" alt="Disconnect">
+            </button>
         </div>
     </nav>
 
@@ -23,40 +31,59 @@
         <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Acquire necessary resources
             and assets.</p>
 
-        <div class="postcard-grid">
-            <!-- Postcard 1 -->
-            <div class="postcard">
-                <img src="https://i.postimg.cc/0N3dSh0Q/icons8-apply-48.png" alt="File Icon">
+        <div class="featured-section">
+            <div class="featured-card">
+                <img src="https://i.postimg.cc/0N3dSh0Q/icons8-apply-48.png" alt="Application">
                 <h3>Application Form</h3>
-                <p>Standard issue job application form for all departments.</p>
-                <a href="index.html" class="download-btn">APPLY</a>
+                <p>Standard issue job application form for all departments. Mandatory for all applicants.</p>
+                <a href="index.html" class="download-btn">APPLY NOW</a>
             </div>
+        </div>
 
+        <div class="postcard-grid">
             <!-- Postcard 2 -->
-            <div class="postcard">
-                <img src="https://i.postimg.cc/8P4fhhPJ/icons8-file-50.png" alt="File Icon">
-                <h3>Citizen Handbook</h3>
-                <p>Rules and regulations for all Los Santos citizens.</p>
-                <a href="download.html" class="download-btn">DOWNLOAD</a>
+            <div class="full-width-postcard">
+                <img src="https://i.postimg.cc/8P4fhhPJ/icons8-file-50.png" alt="File Icon" class="icon-display">
+                <div class="content">
+                    <h3>Citizen Handbook</h3>
+                    <p>Rules and regulations for all Los Santos citizens.</p>
+                </div>
+                <button onclick="window.location.href='download.html'" class="download-icon-btn" title="Download">
+                    <img src="https://i.postimg.cc/9QRXh3m4/icons8-download-48.png" alt="Download">
+                </button>
             </div>
 
             <!-- Postcard 3 -->
-            <div class="postcard">
-                <img src="https://i.postimg.cc/8P4fhhPJ/icons8-file-50.png" alt="File Icon">
-                <h3>Radio Codes</h3>
-                <p>Communication protocols and 10-codes list.</p>
-                <a href="download.html" class="download-btn">DOWNLOAD</a>
+            <div class="full-width-postcard">
+                <img src="https://i.postimg.cc/8P4fhhPJ/icons8-file-50.png" alt="File Icon" class="icon-display">
+                <div class="content">
+                    <h3>Radio Codes</h3>
+                    <p>Communication protocols and 10-codes list.</p>
+                </div>
+                <button onclick="window.location.href='download.html'" class="download-icon-btn" title="Download">
+                    <img src="https://i.postimg.cc/9QRXh3m4/icons8-download-48.png" alt="Download">
+                </button>
             </div>
 
             <!-- Postcard 4 -->
-            <div class="postcard">
-                <img src="https://i.postimg.cc/9FS0tVqR/icons8-download-64.png" alt="File Icon">
-                <h3>Heno AK1J Speed File</h3>
-                <p>It just Encreases your speed. Only on PROBD</p>
+            <div class="full-width-postcard">
+                <img src="https://i.postimg.cc/9FS0tVqR/icons8-download-64.png" alt="File Icon" class="icon-display">
+                <div class="content">
+                    <h3>Heno AK1J Speed File</h3>
+                    <p>It just Encreases your speed. Only on PROBD</p>
+                </div>
                 <a href="https://drive.google.com/uc?export=download&id=1cIFBaPSnmM99OOQ8GmMe3Ifamtxnnd7f
-" class="download-btn" download>DOWNLOAD</a>
+" class="download-icon-btn" download title="Download">
+                    <img src="https://i.postimg.cc/9QRXh3m4/icons8-download-48.png" alt="Download">
+                </a>
             </div>
         </div>
+    </div>
+
+    <div class="fab-container">
+        <button onclick="delayedNavigate('payment.html')" class="fab-button" title="Payment">
+            <img src="https://i.postimg.cc/zDbRfh2k/icons8-dollar-64.png" alt="Payment">
+        </button>
     </div>
 
     <script type="module" src="script.js"></script>
